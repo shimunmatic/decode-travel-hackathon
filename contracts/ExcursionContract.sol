@@ -4,7 +4,8 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract ExcursionContract {
-    uint256 public tourId;
+    uint256 immutable public tourId;
+    bytes32 immutable  tourDescription;
     address payable public operator;
     address payable public guide;
     ERC20 public token;
@@ -32,14 +33,17 @@ contract ExcursionContract {
     constructor(
         address _guide,
         uint256 _tourId,
+        bytes32 _tourDescription,
         uint256[] memory _checkpoints,
         uint256 _endingCheckpoint,
-        uint256 _unitPrice
+        uint256 _unitPrice,
+        address _token
     ) {
         operator = payable(msg.sender);
-        token = ERC20(0xE3Ca443c9fd7AF40A2B5a95d43207E763e56005F);
+        token = ERC20(_token);
         guide = payable(_guide);
         tourId = _tourId;
+        tourDescription = _tourDescription;
         unitPrice = _unitPrice;
         for (uint256 i = 0; i < _checkpoints.length; i++) {
             checkpoints.push(
@@ -59,12 +63,13 @@ contract ExcursionContract {
             uint256,
             address payable,
             address payable,
+            bytes32,
             ERC20,
             Checkpoint[] memory,
             bool
         )
     {
-        return (tourId, operator, guide, token, checkpoints, joruneyEnded);
+        return (tourId, operator, guide, tourDescription, token, checkpoints, joruneyEnded);
     }
 
     function getCustomers() external view returns (Customer[] memory) {
@@ -174,10 +179,10 @@ contract ExcursionContract {
 
     function endJourney() internal {
         joruneyEnded = true;
-        payTheGuide();
+        executePayment();
     }
 
-    function payTheGuide() internal {
+    function executePayment() internal {
         uint256 valueToBeTransfered = getNumberOfCheckedInUsers() * unitPrice;
         token.transferFrom(operator, guide, valueToBeTransfered);
     }
