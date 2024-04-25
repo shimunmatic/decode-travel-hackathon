@@ -24,8 +24,11 @@ Process flow:
 ## Codebase
 
 [ExcursionContract](contracts/ExcursionContract.sol) - main contract which handles the process of the payment to the tour guide and keep track of the customer check ins
+
 [USDC](contracts/USDC.sol) - contract for creating test coins
+
 [UtravekNFT](contracts/UtravelNFT.sol) - contract for creating NFTs
+
 
 ## architecture
 
