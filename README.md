@@ -2,7 +2,7 @@
 
 | Team         | Challange      |
 | ------------ | -------------- |
-| Blockshackle | Alpitour World |
+| Block shackle | Alpitour World |
 
 ## About
 
@@ -29,3 +29,4 @@ Process flow:
 
 ## architecture
 
+[Architecture](Architecture.jpg)
